@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  nginx:
+    image: hsxk/nginx:3.5
+    ports:
+      - "80:80/tcp"
+      - "80:80/udp"
+      - "443:443/tcp"
+      - "443:443/udp"
+    volumes:
+      - ./log:/var/log/nginx
+      - ./wordpress:/var/www/html
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    image: bitnami/php-fpm:latest
+    restart: always
+    environment:
+      - PHP_UPLOAD_MAX_FILESIZE=80M
+      - PHP_POST_MAX_SIZE=80M
+    volumes:
+      - ./wordpress:/var/www/html
+
+  wordpress:
+    image: wordpress:latest
+    volumes:
+      - ./wordpress:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: haokexin
+      WORDPRESS_DB_PASSWORD: "localhost11"
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: localhostroot1
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: haokexin
+      MYSQL_PASSWORD: "localhost11"
