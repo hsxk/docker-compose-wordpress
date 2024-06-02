@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx:
-    image: hsxk/nginx:3.5
+    image: hsxk/nginx:latest
     ports:
       - "80:80/tcp"
       - "80:80/udp"
