@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx:
-    image: hsxk/nginx:3.5
+    image: hsxk/nginx:latest
     ports:
       - "80:80/tcp"
       - "80:80/udp"
@@ -32,13 +32,28 @@ services:
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: haokexin
       WORDPRESS_DB_PASSWORD: "localhost11"
+    depends_on:
+      - mysql
 
   mysql:
     image: mysql:latest
-    ports:
-      - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: localhostroot1
+      MYSQL_ROOT_PASSWORD: "localhost11"
       MYSQL_DATABASE: wordpress
       MYSQL_USER: haokexin
       MYSQL_PASSWORD: "localhost11"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: "localhost11"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
